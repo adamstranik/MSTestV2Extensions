@@ -4,21 +4,31 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- master
-- feature/*
-
-pool:
-  vmImage: 'windows-latest'
-
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    command: 'build'
-    arguments: '-c Release'
-
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: 'test'
-    arguments: '-c Release --no-restore'
+  - master
+  - feature/*
+  
+  pool:
+    vmImage: 'windows-latest'
+  
+  variables:
+    solution: '**/*.sln'
+    buildConfiguration: 'Release'
+  
+  steps:
+  - task: NuGetToolInstaller@1
+  
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+      arguments: '-c $(buildConfiguration)'
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      arguments: '-c $(buildConfiguration)'
+      nobuild: true
+  
