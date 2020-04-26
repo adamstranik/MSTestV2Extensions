@@ -22,7 +22,3 @@ steps:
   inputs:
     command: 'test'
     arguments: '-c Release --no-restore'
-    nobuild: false
-
-
-
