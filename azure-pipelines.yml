@@ -12,15 +12,17 @@ pool:
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
     command: 'build'
     arguments: '-c Release'
 
 - task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: 'test'
-    arguments: '-c Release'
-    nobuild: true
+    arguments: '-c Release --no-restore'
+    nobuild: false
 
 
 
